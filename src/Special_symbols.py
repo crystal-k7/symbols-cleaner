@@ -1,5 +1,8 @@
-# version: 1.2
 # -*- codeing: utf-8 -*-
+"""
+version: 1.0.1
+"""
+
 import re
 import logging
 from time import time
@@ -13,9 +16,9 @@ class stopword:
         :param read_fname: read file name.
         :param read_encoding: read file encoding.
         '''
-        self.loggering()
+        self.logging()
 
-    def loggering(self):
+    def logging(self):
         formatter = logging.Formatter('[%(asctime)s] %(message)s')
         self.logger = logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger("preprocessing")
@@ -34,20 +37,20 @@ class stopword:
             print(e)
             #sys.exit()
 
-    def pattern_setting(self, user=False, del_eng=False, del_num=False, del_kor=False, del_hypen=False, del_emper=False):
+    def pattern_setting(self, user_dict=False, del_eng=False, del_num=False, del_kor=False, del_hypen=False, del_emper=False):
         '''
         Special symbols delete pattern setting.
-        :param user: User select transform word. "trans.txt" is space for select or trans word. False is not used.
+        :param user_dict: User select transform word. "pattern.txt" is space for select or trans word. False is not used.
         :param del_eng: Used eng, True is delete english or not delete.
         :param del_num: Used number, True is delete number or not delete.
         :param del_kor: Used kor, True is delete korean or not delete.
         :param del_hypen: Used kor, True is delete korean or not delete.
         :return:
         '''
-        # (\([A-Z가-힣\s,]+\))= 괄호에 포함된 글자를 제거함
+        # (\([A-Z가-힣\s,]+\))=괄호에 포함된 글자를 제거함
         self.pattern_list = dict()
         self.pattern_list[r'&#[0-9]+;'] = ""  # &#60; &#62; &#34; &#38; html 특수문자 표기
-        if user == True:
+        if user_dict == True:
             self.logger.info("init resetting..")
             with open("pattern.txt", "r", encoding="utf-8") as f:    # 사용자 사전 / 변환 문자열
                 data = f.read()
@@ -95,7 +98,6 @@ class stopword:
             i = 0
             while i < len(text):
                 mo = pattern.findall(text[i])
-                #print("i:", i, "text:", text[i], "mo:", mo)
                 while mo != []:
                     for group in mo:
                         if group == " ":
@@ -123,12 +125,12 @@ class stopword:
         return text, del_list
 
     def symbols_save_data(self, read_fname, write_fname, list_fname=None, read_encoding="utf-8", write_encoding="utf-8"):
-        #self.logger.info("pattarns total: " + str(len(self.pattern_list)))
-        #self.logger.info("start delete pattern.")
-        start = time()
-        #self.logger.info("Read file: " + read_fname)
+        self.logger.info("pattarns total: " + str(len(self.pattern_list)))
+        self.logger.info("start delete pattern.")
+        # start = time()
+        self.logger.info("Read file: " + read_fname)
 
-        all_cnt = self.file_len(read_fname, read_encoding)
+        # all_cnt = self.file_len(read_fname, read_encoding)
         cnt = 0
         with open(abspath(write_fname), "w", encoding=write_encoding) as wf:
             with open(abspath(list_fname), "w", encoding=write_encoding) as delete_list_f:
@@ -145,15 +147,6 @@ class stopword:
                             delete_list_f.write(del_point)
                         cnt += 1
                         # print_progress(cnt, str(all_cnt), 'Delete pattern:', 'Complete', 1, 50)
-        #self.logger.info(timeformat(start))
-        #self.logger.info("Save data. " + write_fname)
-        #self.logger.info("Save delete list. " + list_fname)
-
-
-if __name__ == "__main__":
-    input_file = "../data/POI-191101.txt"
-    deloutput_file = "../data/POI-191101_sw.txt"
-    deloutputlist_file = "../data/POI-191101_sw_list.txt"
-    ss = stopword()
-    ss.pattern_setting(user=True)
-    ss.symbols_save_data(input_file, deloutput_file, deloutputlist_file)#, read_encoding="cp949", write_encoding="cp949")
+        # self.logger.info(timeformat(start))
+        # self.logger.info("Save data. " + write_fname)
+        # self.logger.info("Save delete list. " + list_fname)

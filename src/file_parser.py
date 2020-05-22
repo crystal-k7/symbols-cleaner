@@ -2,20 +2,20 @@
 import os
 from os import listdir, makedirs
 
-from src.Special_symbols import stopword
+from .Special_symbols import stopword
 
 
 class Stopword:
-    def __init__(self, user=True, del_eng=False, del_num=False, del_hypen=False, del_emper=False):
+    def __init__(self, user_dict=True, del_eng=False, del_num=False, del_hypen=False, del_emper=False):
         """
-        :param user: 사용자 사전
+        :param user_dict: 사용자 사전
         :param del_eng: 영문 삭제 여부 (True면 삭제 False는 삭제하지 않음)
         :param del_num: 숫자 삭제 여부 (True면 삭제 False는 삭제하지 않음)
         :param del_hypen: - 삭제 여부 (True면 삭제 False는 삭제하지 않음)
         :param del_emper: & 삭제 여부 (True면 삭제 False는 삭제하지 않음)
         """
         self.stopword = stopword()
-        self.stopword.pattern_setting(user=user, del_eng=del_eng, del_num=del_num, del_hypen=del_hypen, del_emper=del_emper)
+        self.stopword.pattern_setting(user=user_dict, del_eng=del_eng, del_num=del_num, del_hypen=del_hypen, del_emper=del_emper)
 
     def one_file(self, inputpath, outputpath):
         """
@@ -24,7 +24,6 @@ class Stopword:
         :param outputpath: 결과를 저장할 파일명
         :return: 없음
         """
-
         deloutputlist = outputpath[:-4] + "_result_list.txt"
         self.stopword.symbols_save_data(inputpath, outputpath, deloutputlist)
 
@@ -35,11 +34,7 @@ class Stopword:
         여러 개의 파일에 대하여 그 결과를 각각의 파일로 확인할때
         :param inputpath: 필터 작업을 진행할 파일들이 모여있는 폴더명
         :param outputpath: 결과를 저장할 결과 폴더명
-        :param user: 사용자 사전
-        :param del_eng: 영문 삭제 여부 (True면 삭제 False는 삭제하지 않음)
-        :param del_num: 숫자 삭제 여부 (True면 삭제 False는 삭제하지 않음)
-        :param del_hypen: - 삭제 여부 (True면 삭제 False는 삭제하지 않음)
-        :param del_emper: & 삭제 여부 (True면 삭제 False는 삭제하지 않음)
+        :param output_list_path: 삭제 리스트 목록 저장할 폴더명
         :return: 없음
         """
 
