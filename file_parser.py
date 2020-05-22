@@ -1,4 +1,5 @@
 # -*- codeing: utf-8 -*-
+import os
 from os import listdir, makedirs
 
 from src.Special_symbols import stopword
